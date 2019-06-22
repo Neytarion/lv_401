@@ -15,8 +15,8 @@ resource "google_compute_firewall" "www" {
 
 ### To provision Jenkins Master ###
 
-resource "google_compute_instance" "jenkins-master-1" {
-   name = "jenkins-master-lv401"
+resource "google_compute_instance" "jenkins-test" {
+   name = "jenkins-test"
    machine_type = "n1-standard-1"
    zone = "us-central1-a"
    tags = ["jenkins"]
