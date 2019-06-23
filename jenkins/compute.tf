@@ -33,7 +33,19 @@ service_account {
    scopes = ["userinfo-email", "compute-ro", "storage-ro"]
    }
 
- metadata_startup_script ="sudo apt-get update;sudo apt install -y openjdk-8-jdk;sudo apt-get install -y apt-transport-https;wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add - ;sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list';sudo apt-get update;sudo apt-get install -y jenkins;sudo apt-get install -y git;sudo git clone https://github.com/Neytarion/jenkins_xml;sudo cp jenkins_xml/config.xml /var/lib/jenkins;sudo service jenkins restart;"
+   metadata_startup_script = <<SCRIPT
+    sudo apt-get update; 
+    sudo apt install -y openjdk-8-jdk; 
+    sudo apt-get install -y apt-transport-https; 
+    wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add - ; 
+    sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'; 
+    sudo apt-get update; 
+    sudo apt-get install -y jenkins; 
+    sudo apt-get install -y git; 
+    sudo git clone https://github.com/Neytarion/jenkins_xml; 
+    sudo cp jenkins_xml/config.xml /var/lib/jenkins; 
+    sudo service jenkins restart;
+   SCRIPT
 }
 
 
