@@ -34,7 +34,7 @@ service_account {
    }
 
    metadata_startup_script = <<SCRIPT
-    sudo apt-get update; 
+    sudo apt-get update;
     sudo apt install -y openjdk-8-jdk; 
     sudo apt-get install -y apt-transport-https; 
     wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add - ; 
@@ -45,6 +45,15 @@ service_account {
     sudo git clone https://github.com/Neytarion/jenkins_xml; 
     sudo cp jenkins_xml/config.xml /var/lib/jenkins; 
     sudo service jenkins restart;
+    # Installing plugins now 
+    sudo apt install -y wget
+    wget http://localhost:8080/jnlpJars/jenkins-cli.jar
+    java -jar jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin workflow-aggregator
+    java -jar jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin git-parameter
+    # Getting template from repo
+    git clone https://github.com/tooSadman/gcloud
+    java -jar jenkins-cli.jar -s http://127.0.0.1:8080/ create-job tomcat < gcloud/templates/tomcat.xml
+    java -jar jenkins-cli.jar -s http://127.0.0.1:8080/ build tomcat
    SCRIPT
 }
 
