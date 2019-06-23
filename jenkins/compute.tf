@@ -46,17 +46,16 @@ service_account {
     sudo cp jenkins_xml/config.xml /var/lib/jenkins; 
     sudo service jenkins restart;
     # Installing plugins now 
-    sudo apt install -y wget
-    mkdir /home/jenkins && cd /home/jenkins
-    sleep 20 #need to write script here
-    sudo wget http://localhost:8080/jnlpJars/jenkins-cli.jar
-    sudo chmod 777 jenkins-cli.jar
-    java -jar jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin workflow-aggregator
-    java -jar jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin git-parameter
+    sudo apt install -y wget;
+    sudo mkdir /home/jenkins;
+    sleep 20 #need to write script here ;
+    sudo wget -O /home/jenkins/jenkins-cli.jar http://localhost:8080/jnlpJars/jenkins-cli.jar;
+    sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin workflow-aggregator;
+    sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin git-parameter;
     # Getting template from repo
-    git clone https://github.com/tooSadman/gcloud
-    #java -jar jenkins-cli.jar -s http://127.0.0.1:8080/ create-job tomcat < gcloud/templates/tomcat.xml
-    #java -jar jenkins-cli.jar -s http://127.0.0.1:8080/ build tomcat
+    git clone https://github.com/tooSadman/gcloud;
+    sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ create-job tomcat < gcloud/templates/tomcat.xml;
+    #java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ build tomcat
    SCRIPT
 }
 
