@@ -47,8 +47,10 @@ service_account {
     sudo service jenkins restart;
     # Installing plugins now 
     sudo apt install -y wget
-    sudo mkdir /home/jenkins && cd /home/jenkins
-    wget http://localhost:8080/jnlpJars/jenkins-cli.jar
+    mkdir /home/jenkins && cd /home/jenkins
+    sleep 20 #need to write script here
+    sudo wget http://localhost:8080/jnlpJars/jenkins-cli.jar
+    sudo chmod 777 jenkins-cli.jar
     java -jar jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin workflow-aggregator
     java -jar jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin git-parameter
     # Getting template from repo
