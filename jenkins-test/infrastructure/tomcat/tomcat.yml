@@ -1,0 +1,187 @@
+---
+  - name: Install tomcat on centos
+    hosts: tomcat
+    remote_user: root
+    become: true
+    tasks:
+      - name: Install Java
+        yum:
+          name: java-1.8.0-openjdk.x86_64
+          state: latest
+
+      - name: Add group "tomcat"
+        group:
+          name: tomcat
+          state: present
+
+      - name: Create directory
+        file:
+          path: /opt/tomcat
+          state: directory
+
+      - name: Add new user
+        shell: useradd -s /bin/nologin -g tomcat -d /opt/tomcat tomcat
+        args:
+          warn: no
+
+      - name: Download tomcat
+        shell: gsutil cp gs://tomcat_scripts/apache-tomcat-9.0.21.tar.gz .
+
+      - name: Extract apache-tomcat
+        unarchive:
+          src: apache-tomcat-9.0.21.tar.gz
+          dest: /opt/tomcat
+          extra_opts:
+            - --strip-components=1
+
+      - name: Download context.xml
+        shell: gsutil cp gs://tomcat_scripts/context.xml .
+
+      - name: Recursively change group
+        file:
+          path: /opt/tomcat/conf
+          state: directory
+          recurse: yes
+          group: tomcat
+
+      - name: Change permissions to conf
+        file:
+          path: /opt/tomcat/conf
+          mode: g+rwx
+
+      - name: Change permissions to conf/*
+        shell: chmod g+r /opt/tomcat/conf/*
+        args:
+          warn: no
+
+      - name: Recursively change ownership of a logs
+        file:
+          path: /opt/tomcat/logs/
+          state: directory
+          recurse: yes
+          owner: tomcat
+
+      - name: Recursively change ownership of a temp
+        file:
+          path: /opt/tomcat/temp/
+          state: directory
+          recurse: yes
+          owner: tomcat
+
+      - name: Recursively change ownership of a webapps
+        file:
+          path: /opt/tomcat/webapps/
+          state: directory
+          recurse: yes
+          owner: tomcat
+
+      - name: Recursively change ownership of a work
+        file:
+          path: /opt/tomcat/work/
+          state: directory
+          recurse: yes
+          owner: tomcat
+
+      - name: Recursively change group of bin
+        file:
+          path: /opt/tomcat/bin
+          state: directory
+          recurse: yes
+          group: tomcat
+
+      - name: Recursively change group of lib
+        file:
+          path: /opt/tomcat/lib
+          state: directory
+          recurse: yes
+          group: tomcat
+
+      - name: Change permissions to bin
+        file:
+          path: /opt/tomcat/bin
+          mode: g+rwx
+
+      - name: Change permissions to bin/*
+        shell: chmod g+r /opt/tomcat/bin/*
+        args:
+          warn: no
+
+      - name: Download service file
+        shell: gsutil cp gs://tomcat_scripts/tomcat.service .
+
+      - name: Copy tomcat.service
+        copy:
+          src: tomcat.service
+          dest: /etc/systemd/system/tomcat.service
+          owner: root
+          group: root
+
+      - name: Install haveged
+        block:
+        - name: Install haveged
+          yum:
+            name: haveged
+            state: latest
+        - name: Start service haveged
+          service:
+            name: haveged
+            state: started
+        - name: Enable service haveged
+          service:
+            name: haveged
+            enabled: yes
+
+      - name: Start tomcat
+        block:
+        - name: Start service tomcat
+          service:
+            name: tomcat
+            state: started
+        - name: Enable service tomcat
+          service:
+           name: tomcat
+           enabled: yes
+
+      - firewalld:
+          port: 8080/tcp
+          zone: public
+          permanent: true
+          state: enabled
+
+      - name: Edit users file
+        lineinfile:
+          dest: /opt/tomcat/conf/tomcat-users.xml
+          insertbefore: '</tomcat-users>'
+          line: '<user username="scriptadmin" password="lv401devops" roles="manager-script"/>'
+      - name: Edit users file
+        lineinfile:
+          dest: /opt/tomcat/conf/tomcat-users.xml
+          insertbefore: '<user username="scriptadmin" password="lv401devops" roles="manager-script"/>'
+          line: '<user username="guiadmin" password="lv401devops" roles="manager-gui"/>'
+      - name: Edit users file
+        lineinfile:
+          dest: /opt/tomcat/conf/tomcat-users.xml
+          insertbefore: '<user username="guiadmin" password="lv401devops" roles="manager-gui"/>'
+          line: '<role rolename="manager-script"/>'
+      - name: Edit users file
+        lineinfile:
+          dest: /opt/tomcat/conf/tomcat-users.xml
+          insertbefore: '<role rolename="manager-script"/>'
+          line: '<role rolename="manager-gui"/>'
+
+      - name: Dlete context.xml
+        file:
+          path: /opt/tomcat/webapps/manager/META-INF/context.xml
+          state: absent
+
+      - name: Copy context.xml
+        copy:
+          src: context.xml
+          dest: /opt/tomcat/webapps/manager/META-INF/context.xml
+          owner: tomcat
+          group: tomcat
+
+      - name: Restart service tomcat
+        service:
+          name: tomcat
+          state: restarted

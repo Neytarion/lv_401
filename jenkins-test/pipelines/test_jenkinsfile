@@ -1,9 +1,9 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        stage('Creating tomcat servers') {
             steps {
-                echo "hello"
+                sudo ansible-playbook /home/jenkins/lv_401/jenkins-test/infrastructure/tomcat/tomcat.yml 
             }
         }
         stage('Test') {

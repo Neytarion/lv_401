@@ -53,8 +53,8 @@ service_account {
     sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin workflow-aggregator;
     sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin git-parameter;
     # Getting template from repo
-    git clone https://github.com/tooSadman/gcloud;
-    sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ create-job tomcat < gcloud/templates/tomcat.xml;
+    sudo git clone https://github.com/tooSadman/gcloud /home/jenkins/
+    sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ create-job test_tomcat < /home/jenkins/lv_401/templates/test_pipeline.xml;
     #java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ build tomcat
    SCRIPT
 }
