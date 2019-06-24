@@ -3,7 +3,8 @@ pipeline {
     stages {
         stage('Creating tomcat servers') {
             steps {
-                sudo ansible-playbook /home/jenkins/lv_401/jenkins-test/infrastructure/tomcat/tomcat.yml 
+                gsutil -m cp -R  gs://db-instance ~/
+                cd db-instance/db-instance/ ; make
             }
         }
         stage('Test') {
