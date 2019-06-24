@@ -1,14 +1,14 @@
 pipeline {
     agent any
     stages {
-        stage('Creating database node') {
-            steps {
-                build job: 'build_db'
-            }
-        }
         stage('Creating tomcat node') {
             steps {
                 build job: 'tomcat'
+            }
+        }
+        stage('Creating database node') {
+            steps {
+                build job: 'build_db'
             }
         }
         stage('Deploy') {
