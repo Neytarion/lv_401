@@ -8,7 +8,7 @@ pipeline {
         }
         stage('Creating tomcat node') {
             steps {
-                build job: 'installtomcatserver'
+                build job: 'tomcat'
             }
         }
         stage('Deploy') {
