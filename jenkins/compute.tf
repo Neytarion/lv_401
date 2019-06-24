@@ -66,17 +66,18 @@ service_account {
  sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin workflow-aggregator ;
  sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin git-parameter;
  # Getting template from repo
- git clone https://github.com/tooSadman/gcloud; 
- sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ create-job tomcat < gcloud/templates/tomcat.xml;
+ sudo git clone https://github.com/tooSadman/gcloud /home/jenkins/;
+ sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ create-job up_inst < /home/jenkins/gcloud/templates/up_inst.xml;
  #java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ build tomcat;
  sudo systemctl restart jenkins;
+ # Installing ansible now
  sudo yum install -y ansible;
  sudo yum install -y python-pip;
  sudo pip install google-auth requests;
  sudo ansible-inventory -i inventory.gcp.yml --graph;
- ssh-keygen -t rsa -f ~/.ssh/id_rsa -q -P "" ;
- sudo cp ~/.ssh/id_rsa ~/;
- key=$(cat ~/.ssh/id_rsa.pub); echo variable "public_key" { default = '"'"$USER"':'"$key"'"'} >> variables.tf ;
+ sudo ssh-keygen -t rsa -f ~/.ssh/id_rsa -q -P "" ;
+ #sudo cp ~/.ssh/id_rsa ~/;
+ #sudo key=$(cat ~/.ssh/id_rsa.pub); sudo echo variable "public_key" { default = '"'"$USER"':'"$key"'"'} >> variables.tf ;
 SCRIPT
 }
 

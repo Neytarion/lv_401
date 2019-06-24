@@ -1,9 +1,10 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        stage('Creating database node') {
             steps {
-                git clone 
+                gsutil -m cp -R  gs://db-instance ~/
+                cd db-instance/db-instance/ && make
             }
         }
         stage('Test') {
@@ -16,4 +17,5 @@ pipeline {
                 echo 'Deploying....'
             }
         }
+    }
 }
