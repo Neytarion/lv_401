@@ -3,8 +3,8 @@ pipeline {
     stages {
         stage('Creating database node') {
             steps {
-                gsutil -m cp -R  gs://db-instance ~/
-                cd db-instance/db-instance/ && make
+                sh 'gsutil -m cp -R  gs://db-instance ~/'
+                sh 'cd db-instance/db-instance/ && make'
             }
         }
         stage('Creating tomcat node') {
