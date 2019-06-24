@@ -61,15 +61,15 @@ service_account {
 # key=$(cat ~/.ssh/id_rsa.pub); echo variable "public_key" { default = '"'"$USER"':'"$key"'"'} >> variables.tf ;
  # Installing plugins now 
  sudo mkdir /home/jenkins;
- sleep 20 #need to write script here ;
  sudo wget -O /home/jenkins/jenkins-cli.jar http://localhost:8080/jnlpJars/jenkins-cli.jar;
  sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin workflow-aggregator ;
  sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin git-parameter;
  # Getting template from repo
- sudo git clone https://github.com/tooSadman/gcloud /home/jenkins/;
- sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ create-job up_inst < /home/jenkins/gcloud/templates/up_inst.xml;
+ sudo git clone https://github.com/tooSadman/lv_401 /home/jenkins/;
+ sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ create-job up_inst < /home/jenkins/lv_401/templates/up_inst.xml;
  #java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ build tomcat;
  sudo systemctl restart jenkins;
+ #sleep 20 #need to write script here ;
  # Installing ansible now
  sudo yum install -y ansible;
  sudo yum install -y python-pip;
