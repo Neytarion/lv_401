@@ -64,11 +64,12 @@ service_account {
  sudo wget -O /home/jenkins/jenkins-cli.jar http://localhost:8080/jnlpJars/jenkins-cli.jar;
  sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin workflow-aggregator ;
  sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin git-parameter;
+ sudo systemctl restart jenkins;
+ sleep 50;
  # Getting template from repo
  sudo git clone https://github.com/tooSadman/lv_401 /home/jenkins/;
  sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ create-job up_inst < /home/jenkins/lv_401/templates/up_inst.xml;
  #java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ build tomcat;
- sudo systemctl restart jenkins;
  #sleep 20 #need to write script here ;
  # Installing ansible now
  sudo yum install -y ansible;

@@ -7,7 +7,7 @@ pipeline {
                 cd db-instance/db-instance/ && make
             }
         }
-        stage('Test') {
+        stage('Creating tomcat node') {
             steps {
                 echo 'Testing..'
             }
