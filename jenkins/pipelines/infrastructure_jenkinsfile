@@ -1,15 +1,9 @@
 pipeline {
     agent any
     stages {
-        stage('Clean') {
-            steps {
-                build job: 'remove_db'
-            }
-        }
         stage('Creating database node') {
             steps {
-                sh 'gsutil -m cp -R  gs://db-instance ~/'
-                sh 'cd db-instance/db-instance/ && make'
+                build job: 'build_db'
             }
         }
         stage('Creating tomcat node') {
