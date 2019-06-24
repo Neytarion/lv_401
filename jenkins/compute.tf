@@ -67,7 +67,7 @@ service_account {
  sudo systemctl restart jenkins;
  sleep 50;
  # Getting template from repo
- sudo git clone https://github.com/tooSadman/lv_401 /home/jenkins/;
+ sudo git clone https://github.com/tooSadman/lv_401 /home/jenkins/lv_401/;
  sudo java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ create-job up_inst < /home/jenkins/lv_401/templates/up_inst.xml;
  #java -jar /home/jenkins/jenkins-cli.jar -s http://127.0.0.1:8080/ build tomcat;
  #sleep 20 #need to write script here ;
